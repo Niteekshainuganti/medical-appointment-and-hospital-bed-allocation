@@ -1,0 +1,122 @@
+{
+  "1000_patients": {
+    "dataset_size": 1000,
+    "string_matching": {
+      "kmp_time_ms": 7.44,
+      "z_time_ms": 12.24,
+      "naive_time_ms": 4.83,
+      "matches_found": 235
+    },
+    "universal_hashing": {
+      "universal_hash_time_ms": 0.184,
+      "linear_search_time_ms": 3.544,
+      "speedup_factor": 19.3,
+      "collision_stats": {
+        "capacity": 2000,
+        "total_elements": 1000,
+        "occupied_buckets": 908,
+        "load_factor": 0.5,
+        "total_collisions": 92,
+        "max_chain_length": 2,
+        "hash_parameters": {
+          "a": 1867826,
+          "b": 419610,
+          "p": 10000019
+        },
+        "theoretical_complexity": "O(1) Expected Time"
+      }
+    },
+    "flow_algorithms": {
+      "bipartite_matching": {
+        "time_ms": 2865.9,
+        "match_rate_pct": 78.7,
+        "total_matched": 787
+      },
+      "dinic_bed_allocation": {
+        "time_ms": 8.28,
+        "allocated_beds": 152,
+        "utilization_pct": 93.1
+      }
+    }
+  },
+  "5000_patients": {
+    "dataset_size": 5000,
+    "string_matching": {
+      "kmp_time_ms": 42.05,
+      "z_time_ms": 68.72,
+      "naive_time_ms": 14.6,
+      "matches_found": 1133
+    },
+    "universal_hashing": {
+      "universal_hash_time_ms": 0.219,
+      "linear_search_time_ms": 3.453,
+      "speedup_factor": 15.8,
+      "collision_stats": {
+        "capacity": 10000,
+        "total_elements": 5000,
+        "occupied_buckets": 3588,
+        "load_factor": 0.5,
+        "total_collisions": 1412,
+        "max_chain_length": 2,
+        "hash_parameters": {
+          "a": 1867826,
+          "b": 419610,
+          "p": 10000019
+        },
+        "theoretical_complexity": "O(1) Expected Time"
+      }
+    },
+    "flow_algorithms": {
+      "bipartite_matching": {
+        "time_ms": 16018.28,
+        "match_rate_pct": 16.6,
+        "total_matched": 832
+      },
+      "dinic_bed_allocation": {
+        "time_ms": 30.74,
+        "allocated_beds": 152,
+        "utilization_pct": 93.1
+      }
+    }
+  },
+  "10000_patients": {
+    "dataset_size": 10000,
+    "string_matching": {
+      "kmp_time_ms": 88.97,
+      "z_time_ms": 153.95,
+      "naive_time_ms": 29.05,
+      "matches_found": 2240
+    },
+    "universal_hashing": {
+      "universal_hash_time_ms": 0.203,
+      "linear_search_time_ms": 3.827,
+      "speedup_factor": 18.8,
+      "collision_stats": {
+        "capacity": 20000,
+        "total_elements": 10000,
+        "occupied_buckets": 6937,
+        "load_factor": 0.5,
+        "total_collisions": 3063,
+        "max_chain_length": 2,
+        "hash_parameters": {
+          "a": 1867826,
+          "b": 419610,
+          "p": 10000019
+        },
+        "theoretical_complexity": "O(1) Expected Time"
+      }
+    },
+    "flow_algorithms": {
+      "bipartite_matching": {
+        "time_ms": 33416.03,
+        "match_rate_pct": 8.3,
+        "total_matched": 832
+      },
+      "dinic_bed_allocation": {
+        "time_ms": 57.91,
+        "allocated_beds": 152,
+        "utilization_pct": 93.1
+      }
+    }
+  }
+}

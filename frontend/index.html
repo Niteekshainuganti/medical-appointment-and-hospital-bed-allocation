@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI-Driven Hospital Bed & Appointment Allocation System (DSA-3 Project)</title>
+  <link rel="stylesheet" href="/static/css/style.css">
+  <!-- Chart.js for analytics -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="brand-icon">🏥</div>
+      <div class="brand-text">
+        <h2>Hospital DSA-3</h2>
+        <span>Allocation System</span>
+      </div>
+    </div>
+
+    <ul class="nav-links">
+      <li class="nav-item active" data-tab="dashboard-view">📊 Dashboard</li>
+      <li class="nav-item" data-tab="patients-view">👤 Patient Management</li>
+      <li class="nav-item" data-tab="doctors-view">👨‍⚕️ Doctor Scheduling</li>
+      <li class="nav-item" data-tab="beds-view">🛏️ Wards & Bed Allocation</li>
+      <li class="nav-item" data-tab="emergency-view">🚨 Emergency Triage</li>
+      <li class="nav-item" data-tab="analytics-view">📈 Analytics & AI Forecast</li>
+      <li class="nav-item" data-tab="algo-lab-view">🧪 Algorithm Viva Lab</li>
+    </ul>
+  </aside>
+
+  <!-- Main Container -->
+  <main class="main-container">
+    <header class="top-bar">
+      <h1 class="page-title" id="page-title-text">Dashboard Overview</h1>
+      <span class="badge-tag">Review 2, 3 & 4 Standardized Implementation</span>
+    </header>
+
+    <div class="content-body">
+
+      <!-- DASHBOARD TAB -->
+      <section id="dashboard-view" class="tab-view active">
+        <div class="metrics-grid">
+          <div class="metric-card primary">
+            <div class="metric-label">Total Patients</div>
+            <div class="metric-value" id="metric-patients">0</div>
+            <div class="metric-sub">Registered Records</div>
+          </div>
+          <div class="metric-card accent">
+            <div class="metric-label">Active Doctors</div>
+            <div class="metric-value" id="metric-doctors">0</div>
+            <div class="metric-sub">Across 7 Specialties</div>
+          </div>
+          <div class="metric-card success">
+            <div class="metric-label">Scheduled Appointments</div>
+            <div class="metric-value" id="metric-appointments">0</div>
+            <div class="metric-sub">Bipartite Max-Flow Matched</div>
+          </div>
+          <div class="metric-card danger">
+            <div class="metric-label">Bed Occupancy</div>
+            <div class="metric-value" id="metric-beds-occupied">0 / 0</div>
+            <div class="metric-sub" id="metric-bed-utilization">0% Utilization</div>
+          </div>
+          <div class="metric-card warning">
+            <div class="metric-label">Emergency Queue</div>
+            <div class="metric-value" id="metric-emergencies">0 Queued</div>
+            <div class="metric-sub">Latency: <strong id="metric-emergency-latency">0 ms</strong></div>
+          </div>
+        </div>
+
+        <!-- Min-Cut Alert Banner -->
+        <div id="min-cut-alert-box" class="alert-banner" style="display:none;">
+          <div>
+            <div class="alert-title">🔍 Dinic Min-Cut Bottleneck Diagnosis</div>
+            <div class="alert-body" id="min-cut-explanation-text">Calculating graph capacity bottlenecks...</div>
+          </div>
+          <button class="btn btn-secondary" onclick="document.getElementById('min-cut-alert-box').style.display='none'">Dismiss</button>
+        </div>
+
+        <!-- Recent Logs Panel -->
+        <div class="panel">
+          <div class="panel-header">
+            <h3 class="panel-title">⚡ Live System Execution Logs & Algorithmic Traces</h3>
+            <button class="btn btn-secondary" onclick="loadDashboardData()">Refresh Logs</button>
+          </div>
+          <div class="table-responsive">
+            <table>
+              <thead>
+                <tr>
+                  <th>Event Type</th>
+                  <th>Action / Details</th>
+                  <th>Execution Time</th>
+                  <th>Timestamp</th>
+                </tr>
+              </thead>
+              <tbody id="dashboard-logs-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- PATIENTS TAB -->
+      <section id="patients-view" class="tab-view">
+        <div class="panel">
+          <div class="panel-header">
+            <h3 class="panel-title">🔎 Algorithmic Patient Search & Universal Hash Lookup</h3>
+          </div>
+          <div class="form-grid" style="margin-bottom:1rem;">
+            <div class="form-group">
+              <label>Exact Search (KMP / Z-Function)</label>
+              <div style="display:flex; gap:0.5rem;">
+                <input type="text" id="search-exact-input" class="form-control" placeholder="Search exact name or ID...">
+                <select id="search-algo-select" class="form-control" style="width:110px;">
+                  <option value="KMP">KMP</option>
+                  <option value="Z-FUNCTION">Z-Func</option>
+                </select>
+                <button class="btn" onclick="triggerExactSearch()">Search</button>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>Typo-Tolerant Fuzzy Search (Edit-Distance DP)</label>
+              <div style="display:flex; gap:0.5rem;">
+                <input type="text" id="search-fuzzy-input" class="form-control" placeholder="Search misspelled name (e.g. 'Jon Smith')...">
+                <input type="range" id="fuzzy-dist-slider" min="1" max="5" value="3" style="width:80px;" title="Max Edit Distance">
+                <button class="btn btn-warning" onclick="triggerFuzzySearch()">Fuzzy Search</button>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>Universal Hash O(1) ID Lookup</label>
+              <div style="display:flex; gap:0.5rem;">
+                <input type="text" id="search-hash-input" class="form-control" placeholder="e.g. PAT-00042">
+                <button class="btn btn-success" onclick="triggerUniversalHashLookup()">Hash Lookup</button>
+              </div>
+            </div>
+          </div>
+          <div id="hash-stats-box"></div>
+        </div>
+
+        <!-- Add Patient Form -->
+        <div class="panel">
+          <div class="panel-header">
+            <h3 class="panel-title">➕ Register New Patient Record</h3>
+          </div>
+          <form onsubmit="handleAddPatientForm(event)">
+            <div class="form-grid">
+              <div class="form-group">
+                <label>Full Name</label>
+                <input type="text" id="p-name" class="form-control" required placeholder="John Doe">
+              </div>
+              <div class="form-group">
+                <label>Age</label>
+                <input type="number" id="p-age" class="form-control" required value="34">
+              </div>
+              <div class="form-group">
+                <label>Gender</label>
+                <select id="p-gender" class="form-control">
+                  <option value="Male">Male</option>
+                  <option value="Female">Female</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Phone</label>
+                <input type="text" id="p-phone" class="form-control" value="+91-9876543210">
+              </div>
+              <div class="form-group">
+                <label>Specialty Needed</label>
+                <select id="p-specialty" class="form-control">
+                  <option value="Cardiology">Cardiology</option>
+                  <option value="Neurology">Neurology</option>
+                  <option value="Orthopedics">Orthopedics</option>
+                  <option value="Pediatrics">Pediatrics</option>
+                  <option value="Oncology">Oncology</option>
+                  <option value="General Medicine">General Medicine</option>
+                  <option value="Surgical ICU">Surgical ICU</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Ward Type</label>
+                <select id="p-ward-type" class="form-control">
+                  <option value="Cardiology">Cardiology Ward</option>
+                  <option value="ICU">General ICU</option>
+                  <option value="General Medicine">General Medical Ward</option>
+                  <option value="Emergency">Emergency Ward</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Urgency Level (1-5)</label>
+                <select id="p-urgency" class="form-control">
+                  <option value="1">Level 1 (Critical / Resuscitation)</option>
+                  <option value="2">Level 2 (Emergency)</option>
+                  <option value="3" selected>Level 3 (Urgent)</option>
+                  <option value="4">Level 4 (Semi-Urgent)</option>
+                  <option value="5">Level 5 (Non-Urgent)</option>
+                </select>
+              </div>
+            </div>
+            <button type="submit" class="btn btn-success" style="margin-top:1rem;">Register Patient</button>
+          </form>
+        </div>
+
+        <!-- Patients Table -->
+        <div class="panel">
+          <div class="panel-header">
+            <h3 class="panel-title">📋 Registered Patient Directory</h3>
+            <button class="btn btn-secondary" onclick="loadPatientsData()">Reset Filters</button>
+          </div>
+          <div class="table-responsive">
+            <table>
+              <thead>
+                <tr>
+                  <th>Patient ID</th>
+                  <th>Name</th>
+                  <th>Age / Gender</th>
+                  <th>Phone</th>
+                  <th>Specialty</th>
+                  <th>Urgency</th>
+                  <th>Allocation Status</th>
+                </tr>
+              </thead>
+              <tbody id="patients-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- DOCTORS TAB -->
+      <section id="doctors-view" class="tab-view">
+        <div class="panel">
+          <div class="panel-header">
+            <h3 class="panel-title">🧩 Bipartite Maximum Flow Appointment Scheduling</h3>
+            <button class="btn btn-success" onclick="triggerBipartiteMatching()">▶ Run Bipartite Max-Flow Matcher</button>
+          </div>
+          <p style="font-size:0.85rem; color:#94a3b8; margin-bottom:1rem;">
+            Constructs flow network S → Patients (Cap 1) → Doctor-Slots (Cap 1) → T. Maximizes total valid patient-doctor appointments while enforcing specialty and slot non-overlap constraints.
+          </p>
+        </div>
+
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:1.5rem;">
+          <div class="panel">
+            <div class="panel-header"><h3 class="panel-title">👨‍⚕️ Available Doctor Roster</h3></div>
+            <div class="table-responsive">
+              <table>
+                <thead>
+                  <tr><th>Doctor ID</th><th>Name</th><th>Specialty</th><th>Room</th><th>Available Slots</th></tr>
+                </thead>
+                <tbody id="doctors-tbody"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="panel">
+            <div class="panel-header"><h3 class="panel-title">📅 Scheduled Appointments</h3></div>
+            <div class="table-responsive">
+              <table>
+                <thead>
+                  <tr><th>Appt ID</th><th>Patient</th><th>Doctor</th><th>Time Slot</th><th>Room</th><th>Status</th></tr>
+                </thead>
+                <tbody id="appointments-tbody"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- BEDS & WARDS TAB -->
+      <section id="beds-view" class="tab-view">
+        <div class="panel">
+          <div class="panel-header">
+            <h3 class="panel-title">🛏️ Dinic Maximum Flow Hospital Bed Allocation</h3>
+            <button class="btn btn-success" onclick="triggerDinicBedAllocation()">▶ Run Dinic Max-Flow Allocator</button>
+          </div>
+          <p style="font-size:0.85rem; color:#94a3b8; margin-bottom:1rem;">
+            Runs Dinic's Algorithm O(V²E) / O(E√V) over residual graph to assign eligible patients to available beds, followed by Min-Cut bottleneck diagnosis.
+          </p>
+        </div>
+
+        <!-- Discharge Form Panel -->
+        <div class="panel">
+          <div class="panel-header"><h3 class="panel-title">🔄 Patient Discharge & Live Incremental Re-optimisation</h3></div>
+          <div style="display:flex; gap:1rem; align-items:flex-end;">
+            <div class="form-group" style="flex:1;">
+              <label>Patient ID to Discharge</label>
+              <input type="text" id="discharge-patient-id" class="form-control" placeholder="e.g. PAT-00005">
+            </div>
+            <div class="form-group" style="flex:1;">
+              <label>Bed ID Freed</label>
+              <input type="text" id="discharge-bed-id" class="form-control" placeholder="e.g. BED-101">
+            </div>
+            <button class="btn btn-warning" onclick="handleDischargePatient()">Discharge & Re-Optimise</button>
+          </div>
+        </div>
+
+        <!-- Wards Overview Grid -->
+        <div style="margin-bottom:1.5rem;">
+          <h3 style="font-size:1rem; margin-bottom:0.75rem;">Ward Capacities & Utilization</h3>
+          <div class="metrics-grid" id="wards-summary-grid"></div>
+        </div>
+
+        <!-- Visual Bed Map -->
+        <div class="panel">
+          <div class="panel-header"><h3 class="panel-title">🗺️ Real-Time Hospital Bed Occupancy Map</h3></div>
+          <div class="bed-map-grid" id="beds-map-grid"></div>
+        </div>
+      </section>
+
+      <!-- EMERGENCY TRIAGE TAB -->
+      <section id="emergency-view" class="tab-view">
+        <div class="panel">
+          <div class="panel-header">
+            <h3 class="panel-title">🚨 Fast Greedy Emergency Triage Approximation</h3>
+            <button class="btn btn-danger" onclick="triggerGreedyTriage()">▶ Execute Greedy Triage Queue</button>
+          </div>
+          <p style="font-size:0.85rem; color:#94a3b8;">
+            Evaluates priority score S = (6 - Urgency)*1000 + Vitals*200 + (1440 - ArrivalTime)*0.1. Guarantees sub-50ms assignment latency for critical patients.
+          </p>
+        </div>
+
+        <!-- Add Emergency Patient Form -->
+        <div class="panel">
+          <div class="panel-header"><h3 class="panel-title">🚑 Register Incoming Emergency Case</h3></div>
+          <form onsubmit="handleAddEmergencyForm(event)">
+            <div class="form-grid">
+              <div class="form-group">
+                <label>Patient Name</label>
+                <input type="text" id="em-name" class="form-control" required placeholder="Emergency Patient Name">
+              </div>
+              <div class="form-group">
+                <label>Urgency Level (1=Critical, 5=Non-urgent)</label>
+                <select id="em-urgency" class="form-control">
+                  <option value="1">Level 1 - Resuscitation / Trauma</option>
+                  <option value="2">Level 2 - Severe Emergency</option>
+                  <option value="3">Level 3 - Urgent</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Required Specialty</label>
+                <select id="em-specialty" class="form-control">
+                  <option value="Cardiology">Cardiology</option>
+                  <option value="Neurology">Neurology</option>
+                  <option value="Surgical ICU">Surgical ICU</option>
+                  <option value="General Medicine">General Medicine</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Vital Signs Severity (1.0 - 3.0)</label>
+                <input type="number" id="em-vitals" class="form-control" step="0.1" value="2.5">
+              </div>
+            </div>
+            <button type="submit" class="btn btn-danger" style="margin-top:1rem;">Submit & Immediate Triage Pass</button>
+          </form>
+        </div>
+
+        <!-- Emergency Table -->
+        <div class="panel">
+          <div class="panel-header"><h3 class="panel-title">🚨 Emergency Queue & Allocation Log</h3></div>
+          <div class="table-responsive">
+            <table>
+              <thead>
+                <tr><th>Case ID</th><th>Patient</th><th>Urgency</th><th>Specialty</th><th>Vitals Severity</th><th>Status</th><th>Latency</th></tr>
+              </thead>
+              <tbody id="emergency-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ANALYTICS TAB -->
+      <section id="analytics-view" class="tab-view">
+        <div class="panel">
+          <div class="panel-header"><h3 class="panel-title">🤖 AI Demand Forecasting Layer (Experimental Extension Module)</h3></div>
+          <div id="ai-forecast-container">Loading AI Demand Predictions...</div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-header">
+            <h3 class="panel-title">📊 Measured Algorithmic Performance Benchmarks</h3>
+            <div>
+              <a href="/api/analytics/export/patients.csv" class="btn btn-secondary">Download Patients CSV</a>
+              <a href="/api/analytics/export/allocations.csv" class="btn btn-secondary">Download Bed Allocations CSV</a>
+            </div>
+          </div>
+          <pre id="benchmark-json-view" style="background:#020617; color:#38bdf8; padding:1rem; border-radius:8px; font-size:0.8rem; overflow-x:auto;"></pre>
+        </div>
+      </section>
+
+      <!-- ALGORITHM VIVA LAB TAB -->
+      <section id="algo-lab-view" class="tab-view">
+        <div class="panel">
+          <div class="panel-header"><h3 class="panel-title">🧪 Interactive Algorithm Step-by-Step Viva Demonstration</h3></div>
+          <p style="font-size:0.85rem; color:#94a3b8;">
+            Demonstrate exact algorithm mechanics to reviewers and examiners during project review presentations.
+          </p>
+        </div>
+
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:1.5rem;">
+          <!-- KMP Lab -->
+          <div class="panel">
+            <div class="panel-header"><h3 class="panel-title">1. KMP Prefix Function (LPS) Runner</h3></div>
+            <div class="form-group"><label>Text</label><input type="text" id="lab-kmp-text" class="form-control" value="Patient John Smith registered at Cardiology Ward"></div>
+            <div class="form-group" style="margin-top:0.5rem;"><label>Pattern</label><input type="text" id="lab-kmp-pattern" class="form-control" value="John Smith"></div>
+            <button class="btn" style="margin-top:0.75rem;" onclick="runLabKMP()">Compute KMP LPS Array</button>
+            <div id="lab-kmp-output" style="margin-top:1rem; background:#0f172a; padding:0.75rem; border-radius:6px;"></div>
+          </div>
+
+          <!-- Edit Distance DP Lab -->
+          <div class="panel">
+            <div class="panel-header"><h3 class="panel-title">2. Edit-Distance DP Matrix Runner</h3></div>
+            <div class="form-group"><label>String 1 (Query)</label><input type="text" id="lab-ed-str1" class="form-control" value="Jon Smith"></div>
+            <div class="form-group" style="margin-top:0.5rem;"><label>String 2 (Target)</label><input type="text" id="lab-ed-str2" class="form-control" value="John Smith"></div>
+            <button class="btn btn-warning" style="margin-top:0.75rem;" onclick="runLabEditDistance()">Build DP Matrix</button>
+            <div id="lab-ed-output" style="margin-top:1rem; background:#0f172a; padding:0.75rem; border-radius:6px; overflow-x:auto;"></div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <script src="/static/js/app.js"></script>
+</body>
+</html>
